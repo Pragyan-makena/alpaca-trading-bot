@@ -16,9 +16,7 @@ client = StockHistoricalDataClient(
 def get_stock_data():
 
     end = datetime.now()
-
     start = end - timedelta(days=1500)
-
 
     request = StockBarsRequest(
         symbol_or_symbols=SYMBOL,
@@ -28,21 +26,13 @@ def get_stock_data():
         feed=DataFeed.IEX
     )
 
-
-    bars = client.get_stock_bars(
-        request
-    )
-
+    bars = client.get_stock_bars(request)
 
     data = bars.df
 
-
     if "symbol" in data.index.names:
-
         data = data.reset_index()
 
-
-    data = data.sort_index()
-
+    data = data.sort_values("timestamp")
 
     return data
