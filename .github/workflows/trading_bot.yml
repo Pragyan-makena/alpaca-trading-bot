@@ -3,9 +3,8 @@ name: Alpaca Paper Trading Bot
 on:
   schedule:
     - cron: "*/5 13-20 * * 1-5"
-  workflow_dispatch:
 
-  workflow_dispatch:
+  workflow_dispatch::
 
 jobs:
   run-bot:
