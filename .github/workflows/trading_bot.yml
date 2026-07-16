@@ -2,8 +2,8 @@ name: Alpaca Paper Trading Bot
 
 on:
   schedule:
-    # Runs every weekday at 9:35 AM ET (13:35 UTC)
-    - cron: "35 13 * * 1-5"
+    - cron: "*/5 13-20 * * 1-5"
+  workflow_dispatch:
 
   workflow_dispatch:
 
