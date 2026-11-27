@@ -11,12 +11,12 @@ class ValidateTests(unittest.TestCase):
     def test_adjusted_close_is_preferred_and_dates_are_sorted(self):
         raw = pd.DataFrame({
             "Date": ["2024-01-03", "2024-01-02"],
-            "Close": [30.0, 20.0],
-            "Adj Close": [15.0, 10.0],
+            "Close": [22.0, 20.0],
+            "Adj Close": [11.0, 10.0],
         })
         frame, warnings, basis = normalize_price_frame(raw)
         self.assertEqual(basis, "Adj Close")
-        self.assertEqual(frame["price"].tolist(), [10.0, 15.0])
+        self.assertEqual(frame["price"].tolist(), [10.0, 11.0])
         self.assertEqual(len(warnings), 0)
 
     def test_invalid_rows_and_duplicates_are_reported(self):
