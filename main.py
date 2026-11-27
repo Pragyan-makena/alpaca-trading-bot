@@ -1,6 +1,6 @@
 from data import get_stock_data
 from strategy import trend_signal
-from trader import get_account, get_position, buy, sell, is_market_open, has_open_order
+from trader import get_account, get_position, buy, sell, has_open_order
 from risk_manager import calculate_position_size
 from logger import log
 from notifier import send_discord_message as notify  # swapped for the phone notifier later
@@ -38,9 +38,6 @@ def process_symbol(symbol, equity):
 def main():
     log("Starting Alpaca paper trend bot")
     try:
-        if not is_market_open():
-            log("Market closed, exiting")
-            return
         equity = float(get_account().equity)
         for symbol in SYMBOLS:
             process_symbol(symbol, equity)
