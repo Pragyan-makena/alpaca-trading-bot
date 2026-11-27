@@ -3,3 +3,8 @@
 __pycache__/
 trading_bot.log
 output.log
+
+# Local-only input data and generated research reports
+research/data/input/*.csv
+research/output/*
+!research/output/.gitkeep
