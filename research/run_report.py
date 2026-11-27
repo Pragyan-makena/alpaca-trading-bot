@@ -6,6 +6,12 @@ Example:
 from __future__ import annotations
 
 import argparse
+import hashlib
+import json
+import os
+import platform
+from datetime import datetime, timezone
+from importlib.metadata import version
 from pathlib import Path
 
 import pandas as pd
@@ -25,12 +31,21 @@ def build_report(input_dir: Path, output_dir: Path) -> Path:
     output_dir.mkdir(parents=True, exist_ok=True)
     series: dict[str, pd.DataFrame] = {}
     details: dict[str, dict] = {}
+    input_manifest: list[dict[str, str | int]] = []
     for csv_path in csv_files:
         symbol = csv_path.stem.upper()
         frame, warnings, price_basis = read_price_csv(csv_path)
         if len(frame) < 2:
             raise ValueError(f"{csv_path.name} has fewer than two valid price observations.")
         series[symbol] = frame
+        input_manifest.append({
+            "filename": csv_path.name,
+            "sha256": hashlib.sha256(csv_path.read_bytes()).hexdigest(),
+            "price_column": price_basis,
+            "rows_after_validation": len(frame),
+            "start_date": frame.index[0].date().isoformat(),
+            "end_date": frame.index[-1].date().isoformat(),
+        })
         details[symbol] = {
             "summary": summarize_prices(frame),
             "warnings": warnings,
@@ -90,6 +105,21 @@ def build_report(input_dir: Path, output_dir: Path) -> Path:
         "- Check the data provider's terms before sharing or redistributing downloaded CSV files.",
         "",
     ])
+
+    manifest = {
+        "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+        "git_commit": os.getenv("GITHUB_SHA"),
+        "python_version": platform.python_version(),
+        "package_versions": {
+            "pandas": pd.__version__,
+            "matplotlib": version("matplotlib"),
+        },
+        "inputs": input_manifest,
+        "scope": "descriptive_historical_price_analysis_only",
+    }
+    (output_dir / "manifest.json").write_text(
+        json.dumps(manifest, indent=2), encoding="utf-8"
+    )
 
     report_path = output_dir / "report.md"
     report_path.write_text("\n".join(lines), encoding="utf-8")
