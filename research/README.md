@@ -6,7 +6,7 @@ This folder is a separate, read-only research utility. It works with CSV files y
 
 From the repository root, install the existing project requirements:
 
-    python -m pip install -r requirements.txt
+    python -m pip install -r research/requirements.txt
 
 The research tools only need pandas and matplotlib from that list.
 
