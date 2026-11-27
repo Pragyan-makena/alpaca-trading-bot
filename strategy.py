@@ -1,24 +1,24 @@
 import pandas as pd
-from config import SHORT_WINDOW, LONG_WINDOW
+from config import SMA_WINDOW, BAND
 
 
 def add_indicators(data):
-    data["MA20"] = data["close"].rolling(SHORT_WINDOW).mean()
-    data["MA50"] = data["close"].rolling(LONG_WINDOW).mean()
+    data = data.copy()
+    data["SMA"] = data["close"].rolling(SMA_WINDOW).mean()
     return data
 
 
-def moving_average_strategy(data):
+def trend_signal(data):
+    """BUY = clearly above the 200-day SMA, SELL = clearly below, HOLD = inside the band
+    (or not enough history). main.py only buys when flat and only sells when holding."""
     data = add_indicators(data)
-
-    if len(data) < LONG_WINDOW + 1:
+    if len(data) < SMA_WINDOW + 1:
         return "HOLD"
-
-    yesterday = data.iloc[-2]
-    today = data.iloc[-1]
-
-    if yesterday.MA20 < yesterday.MA50 and today.MA20 > today.MA50:
+    last = data.iloc[-1]
+    if pd.isna(last["SMA"]):
+        return "HOLD"
+    if last["close"] > last["SMA"] * (1 + BAND):
         return "BUY"
-    if yesterday.MA20 > yesterday.MA50 and today.MA20 < today.MA50:
+    if last["close"] < last["SMA"] * (1 - BAND):
         return "SELL"
     return "HOLD"

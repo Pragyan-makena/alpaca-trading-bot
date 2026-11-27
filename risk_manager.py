@@ -1,22 +1,8 @@
-from config import (
-    MAX_POSITION_PERCENT,
-    STOP_LOSS_PERCENT,
-    TAKE_PROFIT_PERCENT,
-    SYMBOLS
-)
+from config import POSITION_PERCENT
 
 
 def calculate_position_size(account_value, price):
-    # Split allocation evenly across all symbols so total exposure
-    # stays within MAX_POSITION_PERCENT per symbol, not per account.
-    money = account_value * MAX_POSITION_PERCENT
-    return int(money / price)
-
-
-def check_risk(entry_price, current_price):
-    change = (current_price - entry_price) / entry_price
-    if change <= -STOP_LOSS_PERCENT:
-        return "STOP_LOSS"
-    if change >= TAKE_PROFIT_PERCENT:
-        return "TAKE_PROFIT"
-    return "HOLD"
+    """Whole shares worth POSITION_PERCENT of equity. The 200-day SMA exit is the risk
+    control; fixed stop-loss/take-profit were removed (they cut winners and whipsaw
+    a trend filter)."""
+    return int(account_value * POSITION_PERCENT / price)

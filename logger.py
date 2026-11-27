@@ -1,15 +1,5 @@
-import logging
-
-
-logging.basicConfig(
-    filename="trading_bot.log",
-    level=logging.INFO,
-    format="%(asctime)s | %(message)s"
-)
+from datetime import datetime
 
 
 def log(message):
-
-    print(message)
-
-    logging.info(message)
+    print(f"[{datetime.now():%Y-%m-%d %H:%M:%S}] {message}", flush=True)
