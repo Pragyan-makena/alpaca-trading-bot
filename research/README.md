@@ -4,7 +4,7 @@ This folder is a separate, read-only research utility. It works with CSV files y
 
 ## Setup
 
-From the repository root, install the existing project requirements:
+From the repository root, install the isolated research requirements:
 
     python -m pip install -r research/requirements.txt
 
@@ -34,6 +34,7 @@ Or specify folders:
 The report folder contains:
 - report.md — descriptive summary and embedded charts
 - historical_summary.csv — one row of historical statistics per input file
+- manifest.json — input CSV hashes, dates, and Python/library versions for reproducibility
 - indexed_prices.png — price series rebased to 100 at each file's first observation
 - historical_declines.png — historical peak-to-trough declines
 - daily_change_correlation.png — daily price-change correlations when two or more files are supplied
