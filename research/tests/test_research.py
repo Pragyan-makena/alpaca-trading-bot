@@ -55,10 +55,10 @@ class ReportTests(unittest.TestCase):
             input_dir.mkdir()
             csv_path = input_dir / "TEST.csv"
             csv_path.write_text(
-                "Date,Adj Close,Volume\\n"
-                "2024-01-01,100,1000\\n"
-                "2024-01-02,101,1100\\n"
-                "2024-01-03,102,1200\\n",
+                "Date,Adj Close,Volume\n"
+                "2024-01-01,100,1000\n"
+                "2024-01-02,101,1100\n"
+                "2024-01-03,102,1200\n",
                 encoding="utf-8",
             )
 
