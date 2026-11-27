@@ -1,36 +1,31 @@
-# Alpaca Paper Trading Bot
+# Market Data Research Project
 
-## Setup
+This branch adds an offline, read-only historical market-data analysis tool in the research/ folder.
 
-Install packages:
+## Recommended workflow
 
-pip install -r requirements.txt
+Read research/README.md for setup and usage. The research package:
 
+- Reads historical price CSV files already saved on your computer.
+- Checks dates, prices, duplicates, and unusually large daily changes.
+- Produces descriptive historical statistics and charts.
+- Saves a Markdown report, summary CSV, and reproducibility manifest.
+- Runs automated unit tests through GitHub Actions.
 
-Create environment variables:
+## Run the report
 
-ALPACA_API_KEY=your_paper_key
+Install the isolated dependencies:
 
-ALPACA_SECRET_KEY=your_paper_secret
+    python -m pip install -r research/requirements.txt
 
+Place one CSV per symbol in research/data/input/ and run:
 
-## Run
+    python -m research.run_report
 
-python main.py
+The generated report appears in research/output/.
 
+## Scope
 
-## Strategy
+The research package does not connect to a brokerage or data provider, request credentials, generate buy/sell signals, select strategies, or place orders. Its outputs describe historical data and are not forecasts or investment advice.
 
-BUY:
-20-day moving average > 50-day moving average
-
-SELL:
-20-day moving average < 50-day moving average
-
-
-## Safety
-
-- Paper trading only
-- No live trading
-- Position size limits
-- Logging enabled
+The original root-level bot files are retained separately for repository history and are not imported by the research package. This branch does not change the default main branch.
